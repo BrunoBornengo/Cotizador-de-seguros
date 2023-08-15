@@ -1,12 +1,19 @@
-let bienvenida = prompt("Bienvenido, ¿Desea asegurar su auto? Si/No");
+const ingreso = document.getElementById('ingreso');
+const botonIngreso = document.getElementById('botonIngreso');
+const seccionCotizador = document.getElementById('seccionCotizador')
+const datosGuardados = localStorage.getItem('cotizacion') ? JSON.parse(localStorage.getItem('cotizacion')) : null;
 
-while (bienvenida != "Si" && bienvenida != "No") {
-    alert ("Ingrese solo Si/No")
+botonIngreso.addEventListener('click', function() {
+    // Inicio sesion y paso al cotizador
+    const nombre = document.getElementById('nombre').value;
+    if (nombre) {
+        ingreso.style.display = 'none';
+      seccionCotizador.style.display = 'block';
+    }
+    localStorage.setItem('Nombre', JSON.stringify(nombre));
+  });
 
-    bienvenida = prompt("Bienvenido, ¿Desea asegurar su auto?")
-}
-
-const cotizarSeguro=()=>{
+  const cotizarSeguro=()=>{
 //Recupero los elementos que tengo en el formulario//
     let marca = document.querySelector("#marca").value;
     let anio = document.querySelector("#anio").value;
@@ -30,6 +37,7 @@ const cotizarSeguro=()=>{
     }
 
     let cotizacion={marca, anio, plan};
+    localStorage.setItem('Cotizacion', JSON.stringify(cotizacion));
     document.querySelector("#msj").style.display="none"
 
     resumen.style.backgroundColor="FFF";
@@ -54,7 +62,16 @@ const cotizarSeguro=()=>{
 
 const cotizar =(cotizacion)=>{
     const {marca,anio, plan}=cotizacion;
-    let resultado=2000;
+    // Obtener los datos guardados en el localStorage
+    const datosGuardados = localStorage.getItem('cotizacion') ? JSON.parse(localStorage.getItem('cotizacion')) : null;
+
+    let resultado = 2000;
+
+    if(datosGuardados) {
+        marca = datosGuardados.marca;
+        anio = datosGuardados.anio;
+        plan = datosGuardados.plan;
+    }
 
     const diferenciaAnio=diferencia(anio);
     resultado-=((diferenciaAnio*3)*resultado)/100;
@@ -71,7 +88,7 @@ function obtenerPlan(plan){
     } else {
       return 1.50;
     }
-  }
+   }
 
 const calcularMarca=marca=>{
     let incremento;
@@ -115,79 +132,3 @@ const mostrarError=(elemento,mensaje)=>{
     divError.innerHTML=`<p class="alerta-error">${mensaje}</p>`;
     setTimeout(()=>( divError.innerHTML=``), 2000);
 }
-
-
-
-
-// if(bienvenida == "Si"){
-//     alert ("A continuacion elija el modelo de su auto")
-// } else{
-//     alert ("Gracias, vuelva pronto")
-// }
-
-
-
-// console.log(bienvenida)
-
-// while (bienvenida != "no"){
-//     let marca = prompt("Ford - Renault - Peugeot - Chevrolet - Volkswagen - Fiat")
-
-//     var modelo = ""
-
-//     if (marca == "Ford" || marca == "Renault" || marca == "Peugeot" || marca == "Chevrolet" || marca == "Volkswagen" || marca == "Fiat") {
-//         switch (marca) {
-//             case "Ford":
-//                 modelo = "Ranger, Focus"
-//                 break;
-            
-//             case "Renault":
-//                 modelo = "Clio, Sandero"
-//                 break
-
-//             case "Peugeot":
-//                 modelo = "206, 207"
-//                 break
-
-//             case "Chevrolet":
-//                 modelo = "Corsa, Onix"
-//                 break
-
-//             case "Volkswagen":
-//                 modelo = "Gol, Up"
-//                 break
-
-//             case "Fiat":
-//                 modelo = "Palio, Punto"
-//                 break
-
-//             default:
-//                 break;
-//         }
-//     }
-
-//     else{
-//         alert("Ingrese una de las opciones mostradas en pantalla")
-//     }
-
-//     bienvenida = prompt("¿Desea continuar?")
-
-//     while (bienvenida === "no") {
-//         prompt("Gracias, vuelva pronto")
-        
-//     }
-
-//     modelo = prompt("Seleccione el modelo de su auto: " + modelo)
-
-//     console.log(modelo)
-    
-//         break
-// }
-
-
-// let año = prompt("Muy bien, ahora elija el año de su auto")
-
-// function respuestas() {
-//    console.log("Su respuesta fue: " + modelo + ' ' + año)
-// }
-
-// respuestas()
