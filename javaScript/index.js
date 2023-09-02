@@ -11,6 +11,18 @@ botonIngreso.addEventListener('click', function() {
       seccionCotizador.style.display = 'block';
     }
     localStorage.setItem('Nombre', JSON.stringify(nombre));
+    Swal.fire({
+        title: '¡Bienvenido!',
+        text: `Hola, ${nombre}!`,
+        icon: 'success',
+        confirmButtonText: 'Continuar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            ingreso.style.display = 'none';
+            seccionCotizador.style.display = 'block';
+        }
+      });
+    ;
   });
 
   const cotizarSeguro=()=>{
@@ -22,6 +34,7 @@ botonIngreso.addEventListener('click', function() {
 
     let resumen = document.querySelector("#resumen");
     let resultado = document.querySelector("#resultado");
+    resultado.style.display="none"
 
     let plan="";
 
@@ -32,7 +45,7 @@ botonIngreso.addEventListener('click', function() {
     }
 
     if(marca ==='' || anio === '' || plan === ''){
-        mostrarError("#mensaje-error", "Seleccione todas las opciones")
+        mostrarError("#msj-error-cotizador", "Seleccione todas las opciones")
         return;
     }
 
@@ -47,15 +60,17 @@ botonIngreso.addEventListener('click', function() {
     resumen.innerHTML=`<div style:text-align:center></div>`;
     
     setTimeout(()=>{
+        resumen.style.backgroundColor="#00838f"
         resumen.innerHTML=`
                         <h2>Resumen de cotizacion</h2>
                         <ul>
-                            <li>Marca: ${marca}</li>
+                            <li>Marca: ${mayuscula(marca)}</li>
                             <li>Año: ${anio}</li>
-                            <li>Plan: ${plan}</li>
+                            <li>Plan: ${mayuscula(plan)}</li>
                         </ul>`;
         let cotizacionFinal = cotizar(cotizacion);
         resultado.style.display="block";
+        resultado.className="resultado"
         resultado.innerHTML=`<p class="textoCotizacion">$ ${cotizacionFinal}</p>`;
     },2000);
 }
@@ -82,13 +97,9 @@ const cotizar =(cotizacion)=>{
     return resultado
 }
 
-function obtenerPlan(plan){
-    if(plan==='basico'){
-      return 1.20;
-    } else {
-      return 1.50;
-    }
-   }
+const obtenerPlan=plan=>{
+    return (plan==='basico')?1.20:1.50;
+}
 
 const calcularMarca=marca=>{
     let incremento;
@@ -127,8 +138,13 @@ const diferencia=(anio)=>{
     return new Date().getFullYear()-anio;
 }
 
+
+const mayuscula=(palabra)=>{
+    return palabra.charAt(0).toUpperCase()+palabra.slice(1)
+}
+
 const mostrarError=(elemento,mensaje)=>{
     divError=document.querySelector(elemento);
-    divError.innerHTML=`<p class="alerta-error">${mensaje}</p>`;
+    divError.innerHTML=`<p class="alert alert-danger error">${mensaje}</p>`;
     setTimeout(()=>( divError.innerHTML=``), 2000);
 }
