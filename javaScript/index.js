@@ -170,6 +170,4 @@ fetch("https://referential.p.rapidapi.com/v1/state?limit=5", options)
     })
     .catch((error) => {
       console.log(error);
-    });
-    
-     
+    });  
