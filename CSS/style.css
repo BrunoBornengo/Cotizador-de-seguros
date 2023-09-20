@@ -30,6 +30,19 @@ body {
     font-size: 13px;
 }
 
+.loc{
+    padding: 10px;
+    font-size: 20px;
+    background-color: #fff;
+    padding: 3rem;
+    text-align: center;
+}
+
+.loc ul{
+    font-size: 14px; 
+    text-decoration: dashed;
+}
+
 ul {
     list-style: none;
     padding: none;

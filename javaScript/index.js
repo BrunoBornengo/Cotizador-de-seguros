@@ -98,7 +98,7 @@ const cotizar =(cotizacion)=>{
 }
 
 const obtenerPlan=plan=>{
-    return (plan==='basico')?1.20:1.50;
+    return (plan==='basico')? 1.20 : 1.50;
 }
 
 const calcularMarca=marca=>{
@@ -148,3 +148,28 @@ const mostrarError=(elemento,mensaje)=>{
     divError.innerHTML=`<p class="alert alert-danger error">${mensaje}</p>`;
     setTimeout(()=>( divError.innerHTML=``), 2000);
 }
+
+const listaLoc = document.querySelector('#lista-location');
+
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'a96019c5ccmsh843bbaa6a10b4f4p167231jsn28106506316d',
+		'X-RapidAPI-Host': 'referential.p.rapidapi.com'
+	}
+};
+
+fetch("https://referential.p.rapidapi.com/v1/state?limit=5", options)
+.then((res) => res.json())
+.then((response) => {
+    response.forEach(location => {
+        const li = document.createElement("li");
+        li.textContent = location.value;
+        listaLoc.appendChild(li);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
+     
